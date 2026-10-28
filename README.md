@@ -14,6 +14,15 @@ Kaydedilmiş videolarda eklenti yalnızca izlediğin yeri değil, **tüm videoyu
 çevirir. İlk saniyeler hemen hazırlanır; kalanı sen videoyu izlerken tamamlanır. Böylece ileri
 sardığında çeviri çoğunlukla hazır olur. Video başlığı da modele konu/terim bağlamı olarak verilir.
 
+## İndir
+
+- **Firefox paketi:** [v0.1.3 release](https://github.com/AlperenYILDIZ-0/akilli-youtube-cevirisi/releases/latest)
+  → `akilli-youtube-cevirisi-firefox-0.1.3.zip`
+- **Kaynak kod:** [github.com/AlperenYILDIZ-0/akilli-youtube-cevirisi](https://github.com/AlperenYILDIZ-0/akilli-youtube-cevirisi)
+
+> Not: ZIP imzasızdır. Normal Firefox imzasız eklentiyi kalıcı yüklemez; aşağıdaki
+> **Kalıcı kurulum** bölümüne bak. Chrome/Edge geliştirici modunda doğrudan yüklenir.
+
 ---
 
 ## Neden daha iyi çeviriyor?
@@ -36,8 +45,8 @@ sardığında çeviri çoğunlukla hazır olur. Video başlığı da modele konu
 
 1. `chrome://extensions` adresini aç.
 2. Sağ üstten **Geliştirici modu**nu aç.
-3. **Paketlenmemiş öğe yükle** → şu klasörü seç:
-   `cikti\youtube-ceviri-eklentisi`
+3. **Paketlenmemiş öğe yükle** → indirdiğin/klonladığın klasörün kökünü seç
+   (`manifest.json` dosyasının bulunduğu yer).
 4. Araç çubuğundaki eklenti simgesine tıkla.
 5. **API anahtarı** alanına ücretsiz Gemini anahtarını yaz:
    - <https://aistudio.google.com/apikey> → *Create API key* → kopyala.
@@ -47,17 +56,18 @@ sardığında çeviri çoğunlukla hazır olur. Video başlığı da modele konu
 ### Firefox (Firefox 128 veya üzeri)
 
 Firefox, Chrome'un `background.service_worker` yapısını desteklemediği için ayrı bir paket
-üretiliyor. `cikti\youtube-ceviri-firefox\` klasörü bu pakettir; kaynak kodu aynıdır.
+üretiliyor. Release ZIP'i (veya `node tools\build-firefox.mjs` çıktısı) bu pakettir; kaynak kodu aynıdır.
 
 **Geçici kurulum (en hızlı, 1 dakika):**
 
-1. Firefox'ta `about:debugging#/runtime/this-firefox` adresini aç.
-2. **Geçici eklenti yükle…** (*Load Temporary Add-on…*) düğmesine bas.
-3. `cikti\youtube-ceviri-firefox\manifest.json` dosyasını seç.
-4. Araç çubuğundaki eklenti simgesine tıkla → Gemini anahtarını gir → **Kaydet**.
-5. YouTube'da bir video aç.
+1. Release ZIP'ini bir klasöre çıkar.
+2. Firefox'ta `about:debugging#/runtime/this-firefox` adresini aç.
+3. **Geçici eklenti yükle…** (*Load Temporary Add-on…*) düğmesine bas.
+4. Çıkardığın klasördeki `manifest.json` dosyasını seç.
+5. Araç çubuğundaki eklenti simgesine tıkla → Gemini anahtarını gir → **Kaydet**.
+6. YouTube'da bir video aç.
 
-> Geçici eklenti **Firefox kapanınca silinir**; her açılışta 1–3. adımları tekrarlaman
+> Geçici eklenti **Firefox kapanınca silinir**; her açılışta 1–4. adımları tekrarlaman
 > gerekir. Kalıcı kurulum için aşağıya bak.
 >
 > Kaynak dosyaları güncelledikten sonra `about:debugging` sayfasındaki eklenti kartında
@@ -69,9 +79,9 @@ Firefox normal sürümü, imzalanmamış eklentileri kalıcı olarak yüklemez. 
 
 | Yol | Ne yapmalı |
 | --- | --- |
-| AMO'da imzalat (ücretsiz, önerilen) | <https://addons.mozilla.org/developers/> → *Submit a New Add-on* → **On your own** (unlisted) → `cikti\youtube-ceviri-firefox.zip` dosyasını yükle → onay e-postasından `.xpi` indir → Firefox'ta aç |
+| AMO'da imzalat (ücretsiz, önerilen) | <https://addons.mozilla.org/developers/> → *Submit a New Add-on* → **On your own** (unlisted) → release ZIP'ini yükle → onay e-postasından `.xpi` indir → Firefox'ta aç |
 | Firefox Developer Edition / Nightly | `about:config` → `xpinstall.signatures.required` = `false` → `.zip`i `.xpi` yapıp `about:addons` → dişli → *Dosyadan eklenti yükle* |
-| Her oturumda geçici yükle | Yukarıdaki 3 adım (30 saniye) |
+| Her oturumda geçici yükle | Yukarıdaki 1–4. adımlar (30 saniye) |
 
 > Anahtar yalnızca tarayıcının yerel depolamasında (`storage.local`) durur. İçerik betiğine hiç
 > verilmez; istekler arka plan sayfasından çıkar.
@@ -229,7 +239,7 @@ gösterir (çeviri sahtedir, model gecikmesi ~600 ms ile taklit edilir).
 | "Hız limiti aşıldı (429)" | Gelişmiş ayarlarda **Eşzamanlı istek = 1**, **Dakikada istek sınırı = 12**, **İleri çeviri = 120** |
 | "Model bulunamadı (404)" | **modelleri listele** ile doğru model adını seç |
 | "Altyazı yakalanamadı" | Video oynarken 8 sn altyazı gelmezse çıkar; altyazı gelince kendiliğinden kaybolur. Oynatıcıda CC düğmesinin basılı olduğundan emin ol (eklenti CC'yi kapatmaz, yalnızca görünmez yapar) |
-| Geçici eklenti dosya seçici yanlış klasörde açılıyor | Firefox, Türkçe karakterli yolu bazen `Varsay1lan` diye kaydeder. Seçicide yolu elle `<proje klasörü>\cikti\youtube-ceviri-firefox\manifest.json` olarak gir |
+| Geçici eklenti dosya seçici yanlış klasörde açılıyor | Firefox, Türkçe karakterli yolu bazen `Varsay1lan` diye kaydeder. Seçicide yolu elle `<çıkarılan klasör>\manifest.json` olarak gir |
 | Altyazı görünmüyor ama ses var | **Alt+Shift+T** ile katmanı aç; yazı boyutunu artır |
 | Çeviri yanlış dilde | Hedef dili kontrol et (YouTube otomatik çevirisi açıksa kapat) |
 
@@ -238,9 +248,9 @@ gösterir (çeviri sahtedir, model gecikmesi ~600 ms ile taklit edilir).
 ## Geliştirme
 
 ```powershell
-cd cikti\youtube-ceviri-eklentisi
+# Repo kökünde (manifest.json'un olduğu klasör)
 node tests\self-test.mjs        # 44 birim testi (ağ taklit edilir)
-node tools\build-firefox.mjs    # cikti\youtube-ceviri-firefox\ + .zip üretir
+node tools\build-firefox.mjs    # youtube-ceviri-firefox\ + .zip üretir
 ```
 
 Chrome için derleme yok: klasör doğrudan yüklenir. Firefox paketi aynı kaynaktan
