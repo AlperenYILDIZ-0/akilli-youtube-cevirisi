@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="popup.css" />
+    <title>Akıllı YouTube Çevirisi</title>
+  </head>
+  <body>
+    <header class="head">
+      <div>
+        <h1>Akıllı YouTube Çevirisi</h1>
+        <p class="sub">Kendi AI hesabınla, cümle bütünlüğüyle çeviri</p>
+      </div>
+      <label class="switch" title="Çeviriyi aç/kapat">
+        <input type="checkbox" id="enabled" />
+        <span class="slider"></span>
+      </label>
+    </header>
+
+    <main>
+      <section class="card">
+        <label class="label" for="provider">AI sağlayıcı</label>
+        <select id="provider">
+          <option value="gemini">Google Gemini (ücretsiz katman)</option>
+          <option value="openai">OpenAI uyumlu (Groq, OpenRouter, Ollama…)</option>
+        </select>
+
+        <div id="geminiBox" class="group">
+          <label class="label" for="geminiApiKey">API anahtarı</label>
+          <input id="geminiApiKey" type="password" autocomplete="off" spellcheck="false" placeholder="AIza..." />
+          <div class="row">
+            <label class="label" for="geminiModel">Model</label>
+            <button id="loadModels" class="link" type="button">modelleri listele</button>
+          </div>
+          <select id="geminiModel"></select>
+          <p class="hint">
+            Ücretsiz anahtar:
+            <a href="https://aistudio.google.com/apikey" target="_blank" rel="noreferrer">aistudio.google.com/apikey</a>
+          </p>
+        </div>
+
+        <div id="openaiBox" class="group" hidden>
+          <label class="label" for="preset">Hazır ayar</label>
+          <select id="preset">
+            <option value="">— seçiniz —</option>
+            <option value="groq">Groq (ücretsiz katman)</option>
+            <option value="openrouter">OpenRouter</option>
+            <option value="cerebras">Cerebras</option>
+            <option value="ollama">Ollama (yerel)</option>
+            <option value="lmstudio">LM Studio (yerel)</option>
+          </select>
+
+          <label class="label" for="baseUrl">Sunucu adresi</label>
+          <input id="baseUrl" type="text" spellcheck="false" placeholder="https://api.groq.com/openai/v1" />
+
+          <label class="label" for="genericApiKey">API anahtarı</label>
+          <input id="genericApiKey" type="password" autocomplete="off" spellcheck="false" placeholder="Yerel sunucularda boş bırakılabilir" />
+
+          <div class="row">
+            <label class="label" for="genericModel">Model</label>
+            <button id="loadGenericModels" class="link" type="button">modelleri listele</button>
+          </div>
+          <select id="genericModel"></select>
+        </div>
+
+        <div class="row end">
+          <button id="test" class="ghost" type="button">Bağlantıyı test et</button>
+        </div>
+        <p id="testOut" class="test-out" hidden></p>
+      </section>
+
+      <section class="card">
+        <label class="label" for="targetLang">Hedef dil</label>
+        <select id="targetLang"></select>
+
+        <div class="grid2">
+          <div>
+            <label class="label" for="fontSize">Yazı boyutu <span id="fontSizeVal" class="val"></span></label>
+            <input id="fontSize" type="range" min="16" max="48" step="1" />
+          </div>
+          <div>
+            <label class="label" for="position">Konum</label>
+            <select id="position">
+              <option value="bottom">Alt</option>
+              <option value="top">Üst</option>
+            </select>
+          </div>
+        </div>
+
+        <label class="check"><input id="showOriginal" type="checkbox" /> Orijinal metni de göster</label>
+        <label class="check"><input id="hideYouTubeCaptions" type="checkbox" /> YouTube'un kendi altyazısını gizle</label>
+        <label class="check">
+          <input id="pretranslateAll" type="checkbox" />
+          Tüm videoyu arka planda çevir
+        </label>
+        <p class="hint">
+          Önce izlediğiniz yer hazırlanır, kalanı arka planda sırayla çevrilir. İleri sardığınızda
+          beklemezsiniz; ilk açılışta hemen başlamak için açık bırakın.
+        </p>
+      </section>
+
+      <details class="card">
+        <summary>Gelişmiş ayarlar</summary>
+        <div class="grid2">
+          <div>
+            <label class="label" for="lookahead">İleri çeviri (sn)</label>
+            <input id="lookahead" type="number" min="10" max="300" step="5" />
+          </div>
+          <div>
+            <label class="label" for="batchChars">İstek başına karakter</label>
+            <input id="batchChars" type="number" min="400" max="6000" step="100" />
+          </div>
+          <div>
+            <label class="label" for="maxBatchItems">İstek başına cümle</label>
+            <input id="maxBatchItems" type="number" min="1" max="30" step="1" />
+          </div>
+          <div>
+            <label class="label" for="maxParallel">Eşzamanlı istek</label>
+            <input id="maxParallel" type="number" min="1" max="4" step="1" />
+          </div>
+          <div>
+            <label class="label" for="liveRefreshMs">Canlı yenileme (ms)</label>
+            <input id="liveRefreshMs" type="number" min="200" max="5000" step="100" />
+          </div>
+          <div>
+            <label class="label" for="liveMaxRpm">Dakikada istek sınırı</label>
+            <input id="liveMaxRpm" type="number" min="0" max="120" step="1" />
+          </div>
+        </div>
+        <p class="hint">
+          Hız limiti (429) alırsan "Eşzamanlı istek" değerini 1 yap ve "İleri çeviri" süresini artır.
+          Canlı modda gecikme yüksekse "Canlı yenileme" değerini düşür (600 ms); 429 alırsan yükselt.
+        </p>
+      </details>
+    </main>
+
+    <footer class="foot">
+      <button id="save" class="primary" type="button">Kaydet</button>
+      <span id="status" class="status"></span>
+      <button id="clearCache" class="link danger" type="button">önbelleği temizle</button>
+    </footer>
+
+    <script type="module" src="popup.js"></script>
+  </body>
+</html>

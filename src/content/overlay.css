@@ -1,0 +1,117 @@
+/* Akıllı YouTube Çevirisi — video üstü katman stilleri */
+
+.ayc-layer {
+  --ayc-fs: 30px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 0 5%;
+  pointer-events: none;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Roboto, system-ui, -apple-system, sans-serif;
+}
+
+.ayc-layer[data-pos="bottom"] {
+  bottom: 8.5%;
+}
+
+.ayc-layer[data-pos="top"] {
+  top: 6%;
+}
+
+.ayc-card {
+  max-width: 96%;
+  text-align: center;
+  padding: 0.18em 0.55em 0.24em;
+  border-radius: 10px;
+  background: rgba(8, 8, 10, 0.55);
+  backdrop-filter: blur(4px);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
+}
+
+.ayc-card.is-empty {
+  display: none;
+}
+
+.ayc-tr {
+  color: #ffffff;
+  font-size: var(--ayc-fs);
+  font-weight: 600;
+  line-height: 1.22;
+  letter-spacing: 0.1px;
+  text-shadow: 0 2px 5px rgba(0, 0, 0, 0.95);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.ayc-src {
+  color: rgba(255, 255, 255, 0.62);
+  font-size: calc(var(--ayc-fs) * 0.52);
+  line-height: 1.25;
+  margin-bottom: 1px;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9);
+  word-break: break-word;
+}
+
+.ayc-layer[data-hide-src="1"] .ayc-src,
+.ayc-src:empty {
+  display: none;
+}
+
+.ayc-card.is-pending .ayc-tr {
+  opacity: 0.6;
+  font-weight: 500;
+}
+
+/* Çeviri beklenirken kaynak metin çeviri alanında soluk gösteriliyorsa */
+.ayc-card.is-fallback .ayc-tr {
+  opacity: 0.72;
+  font-weight: 500;
+  letter-spacing: 0;
+}
+
+.ayc-card.is-pending:not(.is-fallback) .ayc-tr {
+  letter-spacing: 2px;
+}
+
+.ayc-pill {
+  font-size: 11px;
+  line-height: 1.2;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.92);
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 999px;
+  padding: 3px 9px;
+  opacity: 0.85;
+  max-width: 80%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ayc-pill[data-kind="busy"] {
+  opacity: 0.55;
+}
+
+/* Canlı mod rozeti: kalıcı, göze batmayan küçük etiket */
+.ayc-pill[data-kind="live"] {
+  opacity: 0.45;
+  font-size: 10px;
+  letter-spacing: 0.3px;
+}
+
+.ayc-pill[data-kind="error"] {
+  background: rgba(170, 25, 25, 0.9);
+  opacity: 1;
+}
+
+/* Kendi katmanımız açıkken YouTube'un kendi altyazısını görünmez yap
+   (DOM'da kalmaya devam eder, canlı yakalama bozulmaz). */
+body.ayc-hide-native .ytp-caption-window-container {
+  opacity: 0 !important;
+}

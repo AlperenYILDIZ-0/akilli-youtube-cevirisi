@@ -1,0 +1,11 @@
+{
+  "name": "akilli-youtube-cevirisi",
+  "version": "0.1.3",
+  "private": true,
+  "type": "module",
+  "description": "YouTube altyazılarını kendi AI hesabınla canlı çeviren tarayıcı eklentisi (Chrome/Edge + Firefox).",
+  "scripts": {
+    "test": "node tests/self-test.mjs",
+    "build:firefox": "node tools/build-firefox.mjs"
+  }
+}

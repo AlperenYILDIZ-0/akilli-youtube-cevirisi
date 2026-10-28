@@ -1,0 +1,299 @@
+:root {
+  --bg: #0f1115;
+  --card: #171a21;
+  --line: #262b35;
+  --text: #e8ecf3;
+  --muted: #98a2b3;
+  --accent: #ff4e45;
+  --accent2: #ff7a5c;
+  --ok: #35c07f;
+  --warn: #f2b23c;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  width: 372px;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  font-size: 13px;
+  padding-bottom: 4px;
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 14px 16px 10px;
+  border-bottom: 1px solid var(--line);
+}
+
+.head h1 {
+  font-size: 14px;
+  font-weight: 650;
+  margin: 0;
+  letter-spacing: 0.2px;
+}
+
+.sub {
+  margin: 3px 0 0;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+main {
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 520px;
+  overflow-y: auto;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 11px 12px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+details.card > summary {
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 12px;
+  color: var(--muted);
+  list-style: none;
+}
+
+details.card[open] > summary {
+  color: var(--text);
+  margin-bottom: 6px;
+}
+
+.label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--muted);
+  display: block;
+  margin-top: 2px;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.row.end {
+  justify-content: flex-end;
+  margin-top: 2px;
+}
+
+.grid2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 10px;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="number"],
+select {
+  width: 100%;
+  background: #0c0e12;
+  color: var(--text);
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  padding: 7px 9px;
+  font-size: 12.5px;
+  font-family: inherit;
+  outline: none;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="number"]:focus,
+select:focus {
+  border-color: #3d4a5e;
+}
+
+select option {
+  background: #0c0e12;
+  color: var(--text);
+}
+
+input[type="range"] {
+  width: 100%;
+  accent-color: var(--accent);
+}
+
+.check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+  color: #d3d9e3;
+  margin-top: 2px;
+}
+
+.check input {
+  accent-color: var(--accent);
+  width: 15px;
+  height: 15px;
+}
+
+.hint {
+  font-size: 11px;
+  color: var(--muted);
+  margin: 2px 0 0;
+  line-height: 1.45;
+}
+
+.hint a {
+  color: var(--accent2);
+}
+
+.val {
+  color: var(--text);
+  font-weight: 500;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: #1d222b;
+  color: var(--text);
+  font-size: 12.5px;
+  padding: 6px 11px;
+}
+
+button:hover {
+  background: #232a35;
+}
+
+button.primary {
+  background: linear-gradient(180deg, var(--accent2), var(--accent));
+  border: none;
+  color: #fff;
+  font-weight: 650;
+  padding: 7px 16px;
+}
+
+button.ghost {
+  background: transparent;
+}
+
+button.link {
+  background: none;
+  border: none;
+  color: var(--accent2);
+  padding: 2px 0;
+  font-size: 11.5px;
+  text-decoration: underline;
+}
+
+button.link.danger {
+  color: #ff8c84;
+}
+
+.test-out {
+  margin: 4px 0 0;
+  font-size: 11.5px;
+  line-height: 1.5;
+  padding: 8px 9px;
+  border-radius: 8px;
+  background: #0c0e12;
+  border: 1px solid var(--line);
+  color: #cbd3df;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.test-out.ok {
+  border-color: rgba(53, 192, 127, 0.45);
+}
+
+.test-out.err {
+  border-color: rgba(255, 90, 80, 0.5);
+  color: #ffb3ad;
+}
+
+.foot {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px 12px;
+  border-top: 1px solid var(--line);
+}
+
+.status {
+  font-size: 11.5px;
+  color: var(--muted);
+  flex: 1;
+}
+
+.status.ok {
+  color: var(--ok);
+}
+
+.status.err {
+  color: #ff8c84;
+}
+
+/* aç/kapat anahtarı */
+.switch {
+  position: relative;
+  width: 40px;
+  height: 22px;
+  flex: 0 0 auto;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  inset: 0;
+  background: #2b323d;
+  border-radius: 999px;
+  transition: 0.18s;
+}
+
+.slider::before {
+  content: "";
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  left: 3px;
+  top: 3px;
+  background: #fff;
+  border-radius: 50%;
+  transition: 0.18s;
+}
+
+.switch input:checked + .slider {
+  background: var(--ok);
+}
+
+.switch input:checked + .slider::before {
+  transform: translateX(18px);
+}
